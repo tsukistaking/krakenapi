@@ -1,3 +1,24 @@
+[project]
+name = "tsuki-kraken-api"
+description = "Tsuki Kraken API"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    "requests"
+]
+requires-python = ">=3.11"
+dynamic = ["version"]
+
+[project.urls]
+repository = "https://github.com/tsukistaking/krakenapi"
+"Bug Tracker" = "https://github.com/tsukistaking/krakenapi/issues"
+
+[tool.setuptools.dynamic]
+version = {attr = "my_package.VERSION"}
+
 [build-system]
 requires = [
     "setuptools>=42",
