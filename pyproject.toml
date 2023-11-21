@@ -21,7 +21,6 @@ repository = "https://github.com/tsukistaking/krakenapi"
 [build-system]
 requires = [
     "setuptools>=45", 
-    "setuptools_scm[toml]>=6.2",
-    "wheel"
+    "setuptools_scm[toml]>=6.2"
 ]
 build-backend = "setuptools.build_meta"
