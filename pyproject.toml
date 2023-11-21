@@ -16,8 +16,8 @@ dynamic = ["version"]
 repository = "https://github.com/tsukistaking/krakenapi"
 "Bug Tracker" = "https://github.com/tsukistaking/krakenapi/issues"
 
-[tool.setuptools.dynamic]
-version = {attr = "tsuki-kraken-api.VERSION"}
+[tool.setuptools-git-versioning]
+enabled = true
 
 [build-system]
 requires = [
