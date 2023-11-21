@@ -16,12 +16,12 @@ dynamic = ["version"]
 repository = "https://github.com/tsukistaking/krakenapi"
 "Bug Tracker" = "https://github.com/tsukistaking/krakenapi/issues"
 
-[tool.setuptools-git-versioning]
-enabled = true
+[tool.setuptools_scm]
 
 [build-system]
 requires = [
-    "setuptools>=42",
+    "setuptools>=45", 
+    "setuptools_scm[toml]>=6.2",
     "wheel"
 ]
 build-backend = "setuptools.build_meta"
