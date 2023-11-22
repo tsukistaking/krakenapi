@@ -80,7 +80,7 @@ def list_earn_strategies():
 def allocate_earn_funds(strategy_id, amount):
     allocate_path = "/0/private/Earn/Allocate"
     allocate_data = {
-        'strategy': strategy_id,
+        'strategy_id': strategy_id,
         'amount': amount
     }
     post_request(allocate_path, allocate_data)
@@ -88,7 +88,7 @@ def allocate_earn_funds(strategy_id, amount):
 def allocate_status(strategy_id):
     status_path = "/0/private/Earn/AllocateStatus"
     status_data = {
-        'strategy': strategy_id
+        'strategy_id': strategy_id
     }
     return post_request(status_path, status_data)
 
