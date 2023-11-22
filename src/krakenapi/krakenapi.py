@@ -1,8 +1,9 @@
-import urllib
-import time
-import hmac
-import hashlib
 import base64
+import hashlib
+import hmac
+import time
+import urllib
+
 import requests
 
 base_url = "https://api.kraken.com"
@@ -70,4 +71,24 @@ def market_trade(pair, side, amount):
         'volume': amount
     }
     post_request(trade_path, trade_data)
+
+def list_earn_strategies():
+    earn_path = "/0/private/Earn/Strategies"
+    response = post_request(earn_path, {})
+    return response['items']
+
+def allocate_earn_funds(strategy_id, amount):
+    allocate_path = "/0/private/Earn/Allocate"
+    allocate_data = {
+        'strategy': strategy_id,
+        'amount': amount
+    }
+    post_request(allocate_path, allocate_data)
+
+def allocate_status(strategy_id):
+    status_path = "/0/private/Earn/AllocateStatus"
+    status_data = {
+        'strategy': strategy_id
+    }
+    return post_request(status_path, status_data)
 
