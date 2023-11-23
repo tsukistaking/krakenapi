@@ -59,7 +59,7 @@ def withdraw(amount, asset, destination):
 def balance(asset):
     balance_path = "/0/private/Balance"
     response = post_request(balance_path, {})
-    balance = float(response.get(asset, 0))
+    balance = float(response['asset'])
     return balance
 
 def market_trade(pair, side, amount):
