@@ -92,7 +92,7 @@ def allocate_status(strategy_id):
     }
     return post_request(status_path, status_data)
 
-def list_earn_allocations(strategy_id):
+def list_earn_allocations():
     allocations_path = "/0/private/Earn/Allocations"
     response = post_request(allocations_path, {})
     return response['items']
