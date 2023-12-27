@@ -97,13 +97,15 @@ def list_earn_allocations():
     response = post_request(allocations_path, {})
     return response['items']
 
-def trade_history(from_datetime, to_datetime):
+def trade_history(from_datetime = None, to_datetime = None):
     trade_history_path = "/0/private/TradesHistory"
     trade_history_data = {
-        "start": int(from_datetime.timestamp()),
-        "end": int(to_datetime.timestamp()),
         "ofs": 0
     }
+    if from_datetime:
+        trade_history_data['start'] = int(from_datetime.timestamp())
+    if to_datetime:
+        trade_history_data['end'] = int(to_datetime.timestamp())
     trades = []
     trade_count = 50
     while trade_count >= 50:
