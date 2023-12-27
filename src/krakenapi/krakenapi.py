@@ -107,12 +107,12 @@ def trade_history(from_datetime = None, to_datetime = None):
         trade_history_data['start'] = int(from_datetime.timestamp())
     if to_datetime:
         trade_history_data['end'] = int(to_datetime.timestamp())
-    trades = []
+    trades = {}
     trade_count = 50
     offset_page = 0
     while offset_page < math.ceil(trade_count / 50):
         response = post_request(trade_history_path, trade_history_data)
-        trades.extend(response['trades'])
+        trades |= response['trades']
         trade_count = response['count']
         offset_page += 1
         trade_history_data['ofs'] = offset_page * 50
