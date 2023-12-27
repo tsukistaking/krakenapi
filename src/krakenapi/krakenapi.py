@@ -1,6 +1,7 @@
 import base64
 import hashlib
 import hmac
+import math
 import time
 import urllib
 
@@ -108,10 +109,16 @@ def trade_history(from_datetime = None, to_datetime = None):
         trade_history_data['end'] = int(to_datetime.timestamp())
     trades = []
     trade_count = 50
-    while trade_count >= 50:
+    offset_page = 0
+    while offset_page < math.ceil(trade_count / 50):
         response = post_request(trade_history_path, trade_history_data)
         trades.extend(response['trades'])
         trade_count = response['count']
-        trade_history_data['ofs'] += 1
+        offset_page += 1
+        trade_history_data['ofs'] = offset_page * 50
+        # Decaying rate limit. Decays at 0.33 requests per second.
+        # Limit is 15/20 and history requests are 2 requests.
+        if offset_page > 6:
+            time.sleep(7)
     
     return trades
