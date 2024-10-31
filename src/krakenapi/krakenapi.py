@@ -57,10 +57,24 @@ def withdraw(amount, asset, destination):
     }
     post_request(withdraw_path, data)
 
-def balance(asset):
+def all_balances():
     balance_path = "/0/private/Balance"
     response = post_request(balance_path, {})
-    balance = float(response[asset])
+    return response
+
+def balance(asset):
+    all_balances_response = all_balances()
+    balance = float(all_balances_response[asset])
+    return balance
+
+def all_balances_extended():
+    balance_extended_path = "/0/private/BalanceEx"
+    response = post_request(balance_extended_path, {})
+    return response
+
+def balance_extended(asset):
+    all_balances_extended_response = all_balances_extended()
+    balance = float(all_balances_extended_response[asset])
     return balance
 
 def market_trade(pair, side, amount):
