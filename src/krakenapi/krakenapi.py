@@ -45,7 +45,6 @@ def post_request(path, data):
         raise Exception(error)
     if not (result := response_json.get('result')):
         raise Exception(f"'result' key not found in json: {response}")
-    print(result)
     return result
 
 def withdraw(amount, asset, destination):
