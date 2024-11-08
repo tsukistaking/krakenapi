@@ -7,9 +7,9 @@ classifiers = [
     "Operating System :: OS Independent"
 ]
 dependencies = [
-    "requests"
+    "aiohttp"
 ]
-requires-python = ">=3.11"
+requires-python = ">=3.13"
 dynamic = ["version"]
 
 [project.urls]
