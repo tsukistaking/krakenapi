@@ -44,20 +44,27 @@ async def post_request(path, data):
     if not API_KEY:
         raise Exception("API_KEY not set") 
     url  = base_url + path
-    async with nonce_lock:
-        data['nonce'] = nonce()
-        headers = {
-            'API-Key': API_KEY,
-            'API-Sign': sign(data, path)
-        }
-        session = await get_session()
-    async with session.post(url, data=data, headers=headers) as response:
-        response_json = await response.json()
-        if error := response_json.get('error'):
-            raise Exception(error)
-        if not (result := response_json.get('result')):
-            raise Exception(f"'result' key not found in json: {response}")
-        return result
+    await nonce_lock.acquire()
+    data['nonce'] = nonce()
+    headers = {
+        'API-Key': API_KEY,
+        'API-Sign': sign(data, path)
+    }
+
+    async def on_headers_sent(session, trace_config_ctx, params):
+        if nonce_lock.locked():
+            nonce_lock.release()
+
+    trace_config = aiohttp.TraceConfig()
+    trace_config.on_request_headers_sent.append(on_headers_sent)
+    async with aiohttp.ClientSession(raise_for_status=True, trace_configs=[trace_config]) as session:
+        async with session.post(url, data=data, headers=headers) as response:
+            response_json = await response.json()
+            if error := response_json.get('error'):
+                raise Exception(error)
+            if not (result := response_json.get('result')):
+                raise Exception(f"'result' key not found in json: {response}")
+            return result
 
 async def withdraw(amount, asset, destination):
     withdraw_path = "/0/private/Withdraw"
