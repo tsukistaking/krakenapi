@@ -13,7 +13,7 @@ API_KEY = None
 SECRET_KEY = None
 
 def nonce():
-    return int(1000*time.time())
+    return int(1000000*time.time())
 
 def sign(data, urlpath):
     if not SECRET_KEY:
@@ -52,7 +52,6 @@ async def post_request(path, data):
         }
         session = await get_session()
     async with session.post(url, data=data, headers=headers) as response:
-        response.raise_for_status()
         response_json = await response.json()
         if error := response_json.get('error'):
             raise Exception(error)
