@@ -30,15 +30,18 @@ def sign(data, urlpath):
 
     return sigdigest.decode()
 
+nonce_lock = asyncio.Lock()
+
 async def post_request(path, data):
     if not API_KEY:
         raise Exception("API_KEY not set") 
     url  = base_url + path
-    data['nonce'] = nonce()
-    headers = {
-        'API-Key': API_KEY,
-        'API-Sign': sign(data, path)
-    }
+    async with nonce_lock:
+        data['nonce'] = nonce()
+        headers = {
+            'API-Key': API_KEY,
+            'API-Sign': sign(data, path)
+        }
     async with aiohttp.ClientSession() as session:
         async with session.post(url, data=data, headers=headers) as response:
             response.raise_for_status()
