@@ -32,6 +32,14 @@ def sign(data, urlpath):
 
 nonce_lock = asyncio.Lock()
 
+session = None
+
+async def get_session():
+    global session
+    if session is None:
+        session = aiohttp.ClientSession(raise_for_status=True)
+    return session
+
 async def post_request(path, data):
     if not API_KEY:
         raise Exception("API_KEY not set") 
@@ -42,15 +50,15 @@ async def post_request(path, data):
             'API-Key': API_KEY,
             'API-Sign': sign(data, path)
         }
-    async with aiohttp.ClientSession() as session:
-        async with session.post(url, data=data, headers=headers) as response:
-            response.raise_for_status()
-            response_json = await response.json()
-            if error := response_json.get('error'):
-                raise Exception(error)
-            if not (result := response_json.get('result')):
-                raise Exception(f"'result' key not found in json: {response}")
-            return result
+        session = await get_session()
+    async with session.post(url, data=data, headers=headers) as response:
+        response.raise_for_status()
+        response_json = await response.json()
+        if error := response_json.get('error'):
+            raise Exception(error)
+        if not (result := response_json.get('result')):
+            raise Exception(f"'result' key not found in json: {response}")
+        return result
 
 async def withdraw(amount, asset, destination):
     withdraw_path = "/0/private/Withdraw"
