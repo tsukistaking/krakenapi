@@ -4,7 +4,7 @@ import hashlib
 import hmac
 import math
 import time
-import urllib
+from urllib import parse
 
 base_url = "https://api.kraken.com"
 API_KEY = None
@@ -17,7 +17,7 @@ def sign(data, urlpath):
     if not SECRET_KEY:
         raise Exception("SECRET_KEY not set")
 
-    postdata = urllib.parse.urlencode(data)
+    postdata = parse.urlencode(data)
     encoded = (str(data['nonce']) + postdata).encode()
     message = urlpath.encode() + hashlib.sha256(encoded).digest()
 
@@ -69,6 +69,11 @@ async def balance(session, asset):
     balance = float(all_balances_response.get(asset, 0))
     return balance
 
+async def balances(session, assets):
+    all_balances_response = await all_balances(session)
+    balances = {asset: float(all_balances_response.get(asset, 0)) for asset in assets}
+    return balances
+
 async def all_balances_extended(session):
     balance_extended_path = "/0/private/BalanceEx"
     response = await post_request(session, balance_extended_path, {})
@@ -78,6 +83,11 @@ async def balance_extended(session, asset):
     all_balances_extended_response = await all_balances_extended(session)
     balance = float(all_balances_extended_response.get(asset, 0))
     return balance
+
+async def balances_extended(session, assets):
+    all_balances_extended_response = await all_balances_extended(session)
+    balances = {asset: float(all_balances_extended_response.get(asset, 0)) for asset in assets}
+    return balances
 
 async def market_trade(session, pair, side, amount):
     trade_path = "/0/private/AddOrder"
