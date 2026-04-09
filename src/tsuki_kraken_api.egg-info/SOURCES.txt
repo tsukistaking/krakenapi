@@ -1,0 +1,10 @@
+.gitignore
+pyproject.toml
+uv.lock
+src/krakenapi/__init__.py
+src/krakenapi/krakenapi.py
+src/tsuki_kraken_api.egg-info/PKG-INFO
+src/tsuki_kraken_api.egg-info/SOURCES.txt
+src/tsuki_kraken_api.egg-info/dependency_links.txt
+src/tsuki_kraken_api.egg-info/requires.txt
+src/tsuki_kraken_api.egg-info/top_level.txt

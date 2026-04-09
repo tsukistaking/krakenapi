@@ -1,5 +1,6 @@
 [project]
 name = "tsuki-kraken-api"
+version = "0.3.0"
 description = "Tsuki Kraken API"
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -7,20 +8,16 @@ classifiers = [
     "Operating System :: OS Independent"
 ]
 dependencies = [
-    "aiohttp"
+    "niquests"
 ]
 requires-python = ">=3.14"
-dynamic = ["version"]
 
 [project.urls]
 repository = "https://github.com/tsukistaking/krakenapi"
 "Bug Tracker" = "https://github.com/tsukistaking/krakenapi/issues"
 
-[tool.setuptools_scm]
-
 [build-system]
 requires = [
-    "setuptools>=45", 
-    "setuptools_scm[toml]>=6.2"
+    "setuptools>=45"
 ]
 build-backend = "setuptools.build_meta"
